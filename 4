@@ -1,0 +1,60 @@
+#include <iostream>
+#include <math.h>
+
+using namespace std;
+
+double solve(double x)    // y" - p(x)y = 6x; p(x)=0;
+{						  // y'(0) = 0; y'(2) = 12;
+	return x * x * x;
+}
+double p(double x)
+{
+	return 0;
+}
+
+double f(double x)
+{
+	return 6*x;
+}
+
+int main()
+{
+	int n = 20;
+	double a = 0;
+	double b = 2;
+	double h = 0.1;
+	double x[21], y[21];
+	x[0] = a;
+
+	y[0] = 0;
+	y[1] = 0.001;
+	y[2] = 0.008;
+	y[3] = y[2] + 0.008 * h;
+
+	y[20] = 8;
+	/*y[19] = 6.859;
+	y[18] = 5.832;
+	y[17] = y[18] - 5.832 * h;*/
+
+	for (int i = 1; i < n + 1; i++)
+	{
+		x[i] = x[i - 1] + h;
+	}
+
+
+	for (int i = 4; i < n - 4; i++)
+	{
+		y[i] = 8 * y[i - 1] - 18 * y[i - 2] + 8 * y[i - 3] + y[i - 4] - 12 * pow(h, 2)*f(x[i-2]);
+	}
+
+	double max = 0;
+	for (int i = 0; i < n + 1; i++)
+	{
+		if (abs(solve(x[i]) - y[i]) > max) 
+			max = abs(solve(x[i]) - y[i]);
+		cout << x[i] << "   " << y[i]<<"    "<< solve(x[i]) << endl;
+	}
+	cout << " max_pogresh = " << max << endl;
+}
+
+
